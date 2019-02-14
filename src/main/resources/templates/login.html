@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>登录</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css"
+          th:href="@{/static/css/manager/font-awesome/css/font-awesome.min.css}">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="css/fontastic.css"
+          th:href="@{/static/css/manager/fontastic.css}">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet"
+          th:href="@{/static/css/manager/style.default.css}">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css"
+          th:href="@{/static/css/manager/custom.css}">
+    <script>
+        window.onload = function () {
+            //禁用复制功能
+            document.oncontextmenu = new Function("event.returnValue=false");
+            document.onselectstart = new Function("event.returnValue=false");
+        }
+    </script>
+</head>
+
+<body>
+<div class="page login-page">
+    <div class="container d-flex align-items-center">
+        <div class="form-holder has-shadow">
+            <div class="row">
+                <!-- Logo & Information Panel-->
+                <div class="col-lg-6">
+                    <div class="info d-flex align-items-center">
+                        <div class="content">
+                            <div class="logo">
+                                <h1 th:text="#{login.title}">博客后台登录</h1>
+                            </div>
+                        </div>
+                        <div th:include="manager_header::#yuzhong"
+                             style="position: absolute;left: 10%;top: 0;background-color: whitesmoke">
+                        </div>
+                    </div>
+                </div>
+                <!-- Form Panel    -->
+                <div class="col-lg-6 bg-white">
+                    <div class="form d-flex align-items-center">
+                        <div class="content">
+                            <form method="post" class="form-validate" th:href="@{/login}">
+                                <div class="form-group">
+                                    <input id="login-username" type="text" name="username" required
+                                           class="input-material"
+                                           th:attr="data-msg=#{login.username.msg}"
+                                           th:value="${oldUsername!=null?oldUsername:''}">
+                                    <label for="login-username" class="label-material"
+                                           th:text="#{login.username}">用户名</label>
+                                    <small id="umsg" th:if="${usernameMsg}" th:text="#{login.username.validate.msg}"
+                                           style="color: #dc3545"></small>
+                                </div>
+                                <div class="form-group">
+                                    <input id="login-password" type="password" name="password" required
+                                           class="input-material" th:attr="data-msg=#{login.password.msg}">
+                                    <label for="login-password" class="label-material"
+                                           th:text="#{login.password}">密码</label>
+                                    <small id="pmsg" th:if="${passwordMsg}" th:text="#{login.password.validate.msg}"
+                                           style="color: #dc3545"></small>
+                                </div>
+                                <input type="submit" class="btn btn-primary" value="登录" id="login"
+                                       th:value="#{login.login}">
+                                <!-- 验证JS -->
+                                <script th:src="@{/static/js/validate.js}"></script>
+                            </form>
+                            <a href="#" class="forgot-pass" th:text="#{login.fg}">忘记密码?</a>
+                            <br>
+                            <small th:text="#{login.na}">没有账户?</small>
+                            <a href="#" class="signup" th:text="#{login.registered}">注册</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyrights text-center">
+        <p>
+            Design by <strong style="color: #6a67e8">Bootstrapious</strong>
+        </p>
+    </div>
+</div>
+<!-- js -->
+<div th:replace="manager_script::#myScript"></div>
+</body>
+
+</html>

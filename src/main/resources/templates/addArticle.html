@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>YD Blog后台管理界面</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="../static/css/manager/font-awesome/css/font-awesome.min.css"
+          th:href="@{/static/css/manager/font-awesome/css/font-awesome.min.css}">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="../static/css/manager/fontastic.css"
+          th:href="@{/static/css/manager/fontastic.css}">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="../static/css/manager/style.default.css" id="theme-stylesheet"
+          th:href="@{/static/css/manager/style.default.css}">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="../static/css/manager/custom.css"
+          th:href="@{/static/css/manager/custom.css}">
+    <!-- CKEditor -->
+    <script type="text/javascript" src="../static/js/ckeditor/ckeditor.js"
+            th:src="@{/static/js/ckeditor/ckeditor.js}"></script>
+    <script type="text/javascript" src="../static/js/ckeditor/translations/zh-cn.js"
+            th:src="@{/static/js/ckeditor/translations/zh-cn.js}"></script>
+</head>
+
+<body>
+<div class="page">
+    <!-- header -->
+    <div th:replace="manager_header::myHeader"></div>
+    <!-- page-content -->
+    <div class="page-content d-flex align-items-stretch">
+        <!-- sidebar -->
+        <div th:replace="manager_sidebar::mySideBar"></div>
+        <div class="content-inner">
+            <!-- Page Header-->
+            <header class="page-header">
+                <div class="container-fluid">
+                    <h2 class="no-margin-bottom" th:text="#{manager.siderbar.aa}">首页</h2>
+                </div>
+            </header>
+            <!-- 添加文章开始 -->
+            <!-- Forms Section-->
+            <section class="forms">
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- Form Elements -->
+                        <div class="col-11" style="margin: auto;">
+                            <!-- 标题 -->
+                            <div class="card">
+                                <div class="card-header d-flex align-items-center">
+                                    <h1 style="margin: auto;">
+                                        《<span th:if="${thisBlog==null}" id="art-view"
+                                               th:text="#{manager.addArticle.title}">文章名称</span><span
+                                            th:if="${thisBlog!=null}" id="art-view"
+                                            th:text="${thisBlog.title}"></span>》
+                                    </h1>
+                                </div>
+                                <br>
+                                <form id="art-form" action="#" method="post" th:action="@{/manager/article}">
+                                    <!-- 新增和修改合用 -->
+                                    <input name="id" type="hidden" th:value="${thisBlog.id}" th:if="${thisBlog!=null}">
+                                    <!-- 结束 -->
+                                    <div class="form-group col-md-12">
+                                        <div class="col-sm-8" style="text-align:center;margin: auto;">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <select id="topic-select" name="topicId" class="form-control"
+                                                            style="background-color: whitesmoke">
+                                                        <option th:each="t : ${topics}"
+                                                                th:text="${t.name}"
+                                                                th:value="${t.id}"
+                                                                class="topic-option"
+                                                                th:selected="${thisBlog!=null?thisBlog.topicId==t.id:false}">
+                                                            选项
+                                                        </option>
+                                                    </select>
+                                                    <!--</div>-->
+                                                </div>
+                                                <span class="text-huge">&nbsp;/&nbsp;</span>
+                                                <input id="art-title" name="title" type="text"
+                                                       class="form-control"
+                                                       placeholder="文章名称"
+                                                       autocomplete="off"
+                                                       style="text-align: center;"
+                                                       th:placeholder="#{manager.addArticle.title}"
+                                                       th:value="${thisBlog!=null?thisBlog.title:''}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--<br>-->
+                                    <!-- Blog信息 -->
+                                    <div class="col-sm-8" style="margin: auto">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <input type="button" class="btn btn-primary disabled"
+                                                       value="信息"
+                                                       th:value="#{manager.addArticle.info}">
+                                            </div>
+                                            <input id="art-info" type="text" class="form-control" name="info"
+                                                   autocomplete="off"
+                                                   th:value="${thisBlog!=null?thisBlog.info:''}">
+                                        </div>
+                                    </div>
+                                    <!--<div class="line"></div>-->
+                                    <br>
+                                    <!-- 导入富文本编辑器开始 -->
+                                    <div id="document-container" class="col-lg-12" style="margin: auto;">
+                                        <div id="toolbar-container"></div>
+                                        <div id="content-container">
+                                            <div id="editor">
+                                                <h2 th:if="${thisBlog==null}">
+                                                    <span th:text="#{manager.addArticle.content}"></span>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 测试获取数据的button -->
+                                    <!--<input type="button" value="获取" id="submit"/>-->
+                                    <!-- 开启编辑的CDEditor文件 -->
+                                    <script src="../static/js/ckeditor/useEditor.js"
+                                            th:src="@{/static/js/ckeditor/useEditor.js}"></script>
+                                    <!-- 导入富文本编辑器结束 -->
+                                    <!-- 文章内容 -->
+                                    <input id="art-content" name="content" type="hidden"
+                                           th:value="${thisBlog!=null?thisBlog.content:''}" autocomplete="off">
+                                    <br>
+                                </form>
+                                <div class="form-group">
+                                    <div style="text-align: center;">
+                                        <input id="btn-submit" type="button" class="btn btn-primary" value="保存/更改"
+                                               th:value="#{manager.addArticle.submit}">
+                                        <a th:href="@{/manager/artics}">
+                                            <input type="button" class="btn btn-secondary" value="取消"
+                                                   th:value="#{manager.addArticle.cancel}">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- 添加文章结束 -->
+            <!-- Page Footer-->
+            <div th:replace="manager_footer::myFooter"></div>
+        </div>
+    </div>
+</div>
+<!-- JavaScript files-->
+<div th:replace="manager_script::#myScript"></div>
+</body>
+
+</html>

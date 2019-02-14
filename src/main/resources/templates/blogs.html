@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="个人Blog">
+    <meta name="author" content="YD">
+    <meta name="generator" content="v1.0.0">
+    <title th:text="#{blogs.head.title}">YD Blog</title>
+    <!--
+    <link rel="icon" href="img/favicon.ico"/>
+    -->
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"
+          rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="../static/css/blog/custom.css" th:href="@{/static/css/blog/custom.css}" rel="stylesheet">
+</head>
+
+<body>
+<header th:fragment="header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <span class="navbar-brand">
+            <img src="../static/css/img/yd.jpg" width="30px" th:src="@{/static/img/yd.jpg}"/>
+            <strong th:text="#{blogs.brand}">YD Blog</strong>
+        </span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu-shrink"
+                aria-controls="menu-shrink" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menu-shrink">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active"
+                    th:attr="class=${#strings.equals(notice,'ALL')?'nav-item active':'nav-item'}">
+                    <a class="nav-link" href="#" th:href="@{/index}" th:text="#{blogs.header.h}">首页<span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item dropdown"
+                    th:attr="class=${not #strings.equals(notice,'ALL')?'nav-item dropdown active':'nav-item dropdown'}">
+                    <a class="nav-link dropdown-toggle" href="#" id="artic-topic" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false" th:text="#{blogs.header.t}">主题</a>
+                    <div class="dropdown-menu" aria-labelledby="artic-topic">
+                        <a class="dropdown-item" href="#"
+                           th:attr="class=${#strings.equals(notice,topic.name)?'dropdown-item active':'dropdown-item'}"
+                           th:each="topic : ${topics}"
+                           th:href="@{/index/}+${topic.id}"
+                           th:text="${topic.name}">
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" th:text="#{blogs.header.f}">友情链接</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="i18n" data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false" th:text="#{blogs.header.l}">语言</a>
+                    <div class="dropdown-menu" aria-labelledby="i18n">
+                        <a class="dropdown-item" href="#"
+                           th:href="${#httpServletRequest.getRequestURL()+'?lang=zh_CN'}"
+                           th:if="${not #strings.equals(#locale.getCountry(),'CN')}">简体中文</a>
+                        <a class="dropdown-item" href="#"
+                           th:href="${#httpServletRequest.getRequestURL()+'?lang=en_US'}"
+                           th:if="${not #strings.equals(#locale.getCountry(),'US')}">English</a>
+                        <a class="dropdown-item" href="#"
+                           th:href="${#httpServletRequest.getRequestURL()+'?lang=ja_JP'}"
+                           th:if="${not #strings.equals(#locale.getCountry(),'JP')}">日本語</a>
+                        <a class="dropdown-item" href="#"
+                           th:href="${#httpServletRequest.getRequestURL()+'?lang=ko_KR'}"
+                           th:if="${not #strings.equals(#locale.getCountry(),'KR')}">한국어</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:text="#{blogs.header.a}">关于</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"
+                       th:placeholder="#{blogs.header.s}">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit" th:text="#{blogs.header.s}">搜索</button>
+            </form>
+        </div>
+    </nav>
+</header>
+<main role="main" class="container">
+    <h1 class="topic-notice" th:if="${#strings.equals(notice,'ALL')}" th:text="#{blogs.notice.all}">主题名称</h1>
+    <h1 class="topic-notice" th:if="${not #strings.equals(notice,'ALL')}" th:text="${notice}">主题名称</h1>
+    <hr>
+    <!-- 开始 -->
+    <div class="row">
+        <div class="col-md-4" th:each="b : ${blogList}">
+            <div class="card mb-4 shadow-sm">
+                <img src="../static/css/img/1.jpg" width="100%" height="192" th:src="@{/static/img/1.jpg}"/>
+                <div class="card-body">
+                    <span class="blog-title"
+                          th:text="${#strings.length(b.title)>10?b.title.substring(0,10)+'...':b.title}"
+                          th:title="${b.title}">文章名称</span>
+                    <p class="card-text blog-info"
+                       th:text="${#strings.length(b.info)>27?b.info.substring(0,27)+'...':b.info}"
+                       th:title="${b.info}">介绍</p>
+                    <hr/>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a th:href="@{/blog/}+${b.id}" href="/blog/xx">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">查看</button>
+                            </a>
+                            <a>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">分享</button>
+                            </a>
+                        </div>
+                        <div class="text-muted blog-time">
+                            <span th:text="${#dates.format(b.relTime, 'HH:mm')}" style="font-size: large"></span>
+                            <br>
+                            <span th:text="${#dates.format(b.relTime, 'yyyy年MM月dd日')}"></span>
+                        </div>
+                        <!--<small class="text-muted" th:text="${#dates.format(b.releaseTime, 'HH:mm yyyy年MM月dd日')}">-->
+                        <!--发布时间-->
+                        <!--</small>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 -->
+    <hr/>
+    <footer class="container py-5" th:fragment="footer">
+        <div class="row">
+            <div class="col-12 col-md footer-notice">
+                <img src="../static/css/img/logo.jpg" width="130px" th:src="@{/static/img/logo.jpg}"/>
+                <hr>
+                <p class="lead" id="my-sign">[[#{blogs.footer.n1}]]<br>[[#{blogs.footer.n2}]]</p>
+                <small class="d-block mb-3 text-muted">YoungDream &copy; 2019 By YD</small>
+            </div>
+            <div class="col-6 col-md">
+                <h5 th:text="#{blogs.footer.d1}">最新文章</h5>
+                <ul class="list-unstyled text-small">
+                    <li th:each="b : ${newBlogs}">
+                        <a class="text-muted" href="#"
+                           th:href="@{/blog/}+${b.id}"
+                           th:text="${b.title}">xxx</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5 th:text="#{blogs.footer.d2}">最新XXX</h5>
+                <ul class="list-unstyled text-small">
+                    <li th:each="b : ${hcBlogs}">
+                        <a class="text-muted" href="#"
+                           th:href="@{/blog/}+${b.id}"
+                           th:text="${b.title}">xxx</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</main>
+
+<!-- /.container -->
+<div th:fragment="script">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script>
+        window.jQuery || document.write('<script src="[[@{/webjars/jquery/3.3.1/jquery.slim.min.js}]]"><\/script>')
+    </script>
+    <script src="js/bootstrap.bundle.min.js" th:src="@{/webjars/bootstrap/4.2.1/js/bootstrap.bundle.min.js}"></script>
+</div>
+</body>
+
+</html>

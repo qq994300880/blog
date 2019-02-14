@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>sideBar</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+</head>
+
+<body>
+<!-- Side Navbar -->
+<nav class="side-navbar" th:fragment="mySideBar">
+    <!-- Sidebar Header-->
+    <div class="sidebar-header d-flex align-items-center">
+        <div class="avatar">
+            <img src="../static/img/user.jpg" th:src="@{/static/img/user.jpg}" class="img-fluid rounded-circle">
+        </div>
+        <div class="title">
+            <h1 class="h4">YD</h1>
+            <p>开发爱好者</p>
+        </div>
+    </div>
+    <!-- Sidebar Navidation Menus--><span class="heading" th:text="#{manager.siderbar.menu}">菜单</span>
+    <ul class="list-unstyled">
+        <li th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'index')?'active':''}">
+            <a href="#" th:href="@{/manager/index}">
+                <i class="fa fa-home"></i><strong th:text="#{manager.siderbar.home}">首页</strong>
+            </a>
+        </li>
+        <li th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'artic')?'active':''}">
+            <a href="#articleDropdown" data-toggle="collapse"
+               th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'artic')?'':'collapsed'},
+            aria-expanded=${#strings.contains(#httpServletRequest.getRequestURL(),'artic')?'true':'false'}">
+                <i class="fa fa-inbox"></i>
+                <strong th:text="#{manager.siderbar.am}">文章管理</strong>
+            </a>
+            <ul id="articleDropdown" class="collapse list-unstyled"
+                th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'artic')?'collapse list-unstyled show':'collapse list-unstyled'}">
+                <li th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'article')?'active':''}">
+                    <a href="#" th:href="@{/manager/article}">
+                        <i class="fa fa-file-o"></i>
+                        <strong th:text="#{manager.siderbar.aa}">新增文章</strong>
+                    </a>
+                </li>
+                <li th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'artics')?'active':''}">
+                    <a href="#" th:href="@{/manager/artics}">
+                        <i class="fa fa-files-o"></i>
+                        <strong th:text="#{manager.siderbar.al}">文章列表</strong>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'topi')?'active':''}">
+            <a href="#topicDropdown" data-toggle="collapse"
+               th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'topi')?'':'collapsed'},
+            aria-expanded=${#strings.contains(#httpServletRequest.getRequestURL(),'topi')?'true':'false'}">
+                <i class="fa fa-tasks"></i>
+                <strong th:text="#{manager.siderbar.tm}">主题管理</strong>
+            </a>
+            <ul id="topicDropdown" class="collapse list-unstyled"
+                th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'topi')?'collapse list-unstyled show':'collapse list-unstyled'}">
+                <li th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'topic')?'active':''}">
+                    <a href="#" th:href="@{/manager/topic}">
+                        <i class="fa fa-tag"></i>
+                        <strong th:text="#{manager.siderbar.aa}">新增主题</strong>
+                    </a>
+                </li>
+                <li th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'topis')?'active':''}">
+                    <a href="#" th:href="@{/manager/topis}">
+                        <i class="fa fa-tags"></i>
+                        <strong th:text="#{manager.siderbar.tl}">主题列表</strong>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#"><i class="fa fa-star"></i>书签(待定)</a>
+        </li>
+        <li>
+            <a href="#"><i class="fa fa-user"></i>用户管理(待定)</a>
+        </li>
+        <li>
+            <a href="#"><i class="fa fa-cog"></i>系统管理(待定)</a>
+        </li>
+        <li>
+            <a href="#"><i class="fa fa-trash"></i>回收站(待定)</a>
+        </li>
+        <li>
+            <a href="#" th:href="@{/logout}">
+                <i class="fa fa-sign-out"></i>
+                <strong th:text="#{manager.out}">退出登录</strong>
+            </a>
+        </li>
+    </ul>
+    <span class="heading" th:text="#{manager.siderbar.af}">附加功能</span>
+    <ul class="list-unstyled">
+        <li>
+            <a href="#">
+                <i class="icon-flask"></i>
+                <strong th:text="#{manager.siderbar.test}">实验(待定)</strong>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class="icon-screen"></i>
+                <strong th:text="#{manager.siderbar.view}">视图(待定)</strong>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class="icon-mail"></i>
+                <strong th:text="#{manager.siderbar.msg}">消息(待定)</strong>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class="icon-picture"></i>
+                <strong th:text="#{manager.siderbar.picture}">图片(待定)</strong>
+            </a>
+        </li>
+    </ul>
+</nav>
+</body>
+
+</html>

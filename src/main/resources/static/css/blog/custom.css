@@ -1,0 +1,131 @@
+body {
+    padding-top: 5rem;
+    /*height: auto;*/
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: flex;
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    /*padding-top: 40px;*/
+    /*padding-bottom: 40px;*/
+    /*background-color: #f5f5f5;*/
+    background: url("../../img/1.jpg") fixed;
+    /*background-repeat: no-repeat;*/
+    /*background-attachment: fixed;*/
+    /*background-size: auto;*/
+    animation-name: myfirst;
+    animation-duration: 30s;
+    /*变换时间*/
+    animation-delay: 3s;
+    /*动画开始时间*/
+    animation-iteration-count: infinite;
+    /*下一周期循环播放*/
+    animation-play-state: running;
+    /*动画开始运行*/
+}
+
+@keyframes myfirst {
+    0% {
+        padding-top: 5rem;
+        background: url("../../img/1.jpg") fixed;
+        /*background-size: auto;*/
+    }
+    20% {
+        padding-top: 5rem;
+        background: url("../../img/2.jpg") fixed;
+        /*background-size: auto;*/
+    }
+    40% {
+        padding-top: 5rem;
+        background: url("../../img/3.jpg") fixed;
+        /*background-size: auto;*/
+    }
+    60% {
+        padding-top: 5rem;
+        background: url("../../img/4.jpg") fixed;
+        /*background-size: auto;*/
+    }
+    80% {
+        padding-top: 5rem;
+        background: url("../../img/5.jpg") fixed;
+        /*background-size: auto;*/
+    }
+    100% {
+        padding-top: 5rem;
+        background: url("../../img/1.jpg") fixed;
+        /*background-size: auto;*/
+    }
+}
+
+.footer-notice {
+    opacity: 0.9;
+    /*color: #545B62;*/
+    font-family: "楷体";
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+
+#my-sign {
+    font-weight: 900;
+}
+
+/*自动*/
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+
+/* 别改*/
+
+footer {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.topic-notice {
+    /*opacity: 0.7;*/
+    font-weight: 900;
+    font-family: "楷体";
+}
+
+#row-editor {
+    filter: alpha(Opacity=75);
+    -moz-opacity: 0.75;
+    opacity: 0.75;
+}
+
+/*发布时间字样*/
+.circle-release-time {
+    font-family: initial;
+}
+
+/*阅读数字样*/
+.reading-count {
+
+}
+
+.blog-title {
+    font-size: x-large;
+    font-weight: 900;
+    color: #fda926;
+}
+
+.blog-info {
+    font-size: medium;
+    font-weight: 500;
+    color: #089ea7;
+}
+
+.blog-time {
+    text-align: right;
+    font-size: small;
+}

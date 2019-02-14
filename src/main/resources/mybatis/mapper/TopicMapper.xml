@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yd.blog.mapper.TopicMapper">
+
+    <insert id="addTopic" parameterType="com.yd.blog.bean.Topic">
+        INSERT INTO topic(name, picSrc) VALUES(#{name},#{picSrc}
+    </insert>
+
+    <delete id="deleteTopicById">
+        DELETE FROM topic WHERE id=#{id}
+    </delete>
+
+    <update id="updateTopic">
+        UPDATE topic SET name=#{name},picSrc=#{picSrc} WHERE id=#{id}
+    </update>
+
+    <select id="getTopicById" resultType="com.yd.blog.bean.Topic">
+        SELECT id,name,picSrc FROM topic WHERE id=#{id}
+    </select>
+
+    <select id="getAllTopic" resultType="com.yd.blog.bean.Topic">
+        SELECT id,name,picSrc FROM topic
+    </select>
+</mapper>
