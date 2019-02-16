@@ -25,7 +25,7 @@ public interface BlogMapper {
     @Select("SELECT * FROM blog WHERE id=#{id}")
     Blog getBlogById(Integer id);
 
-    @Select("SELECT id,title,info,rel_time FROM blog ORDER BY rel_time DESC ")
+    @Select("SELECT id,title,info,rel_time,topic_id FROM blog ORDER BY rel_time DESC ")
     List<Blog> getAllBlog();
 
     @Select("SELECT id,title,info,rel_time,reading_count,topic_id FROM blog ORDER BY rel_time DESC ")
