@@ -83,8 +83,8 @@
                                 </div>
                                 <div style="margin: auto;height: 100px;width: 100px;">
                                     <label for="picFile" class="label-material">
-                                        <img id="topic-url" th:src="@{/static/img/plus.jpg}" width="100px"
-                                             height="100px"/>
+                                        <img id="topic-url" width="100px" height="100px"
+                                             th:src="${thisTopic!=null?#session.getServletContext().getContextPath()+thisTopic.picSrc:#session.getServletContext().getContextPath()+'/static/img/plus.jpg'}"/>
                                     </label>
                                     <!-- 图片上传表单 -->
                                     <form id="picForm">
@@ -92,7 +92,8 @@
                                                th:attr="addr=@{/manager/upload},
                                                    noPic=#{manager.addTopic.picFrom.noPic},
                                                    moreSize=#{manager.addTopic.picFrom.ms},
-                                                   upFailed=#{manager.addTopic.pic.upFailed}">
+                                                   upFailed=#{manager.addTopic.pic.upFailed},
+                                                   path=@{/}">
                                     </form>
                                 </div>
                                 <!-- 文件上传JS -->

@@ -252,7 +252,7 @@ public class ManagerController {
             //开始保存文件
             try {
                 file.transferTo(saveFile);
-                String url = session.getServletContext().getContextPath() + "/upload/" + dirPath + "/" + localFileName;
+                String url = "/upload/" + dirPath + "/" + localFileName;
 //                log.info(url);
                 return url;
             } catch (IOException e) {
