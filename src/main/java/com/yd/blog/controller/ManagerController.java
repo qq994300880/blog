@@ -1,7 +1,5 @@
 package com.yd.blog.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.yd.blog.bean.Admin;
 import com.yd.blog.bean.Blog;
 import com.yd.blog.bean.Topic;
@@ -12,13 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.jws.WebParam;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @Author YoungDream
@@ -122,12 +128,23 @@ public class ManagerController {
     public String getAll(Model model) {
         model.addAttribute("topics", topicMapper.getAllTopic());
 //        使用分页插件,目前还没有使用
-//        PageHelper.startPage(1,10);
+//        PageHelper.startPage(1, 10);
         List<Blog> blogs = blogMapper.getAllBlogNoHaveContent();
-//        PageInfo<Blog> pageInfo=new PageInfo<>(blogs);
+//        PageInfo<Blog> pageInfo = new PageInfo<>(blogs);
+//        log.info(pageInfo.toString());
         model.addAttribute("blogs", blogs);
         return "articleList";
     }
+
+//    @ResponseBody
+//    @GetMapping("manager/artics/json")
+//    public PageInfo<Blog> get() {
+//        //测试分页插件,目前还没有使用
+//        PageHelper.startPage(1, 10);
+//        List<Blog> blogs = blogMapper.getAllBlogNoHaveContent();
+//        PageInfo<Blog> pageInfo = new PageInfo<>(blogs);
+//        return pageInfo;
+//    }
 
     @GetMapping("manager/article/{id}")
     public String changeArt(Model model, @PathVariable("id") Integer id) {
@@ -168,7 +185,7 @@ public class ManagerController {
     @GetMapping("manager/topic/{id}")
     public String updateTopic(Model model, @PathVariable("id") Integer id) {
         model.addAttribute("thisTopic", topicMapper.getTopicById(id));
-        return "addTopic";
+        return "forward:/manager/topic";
     }
 
     @PostMapping("manager/topic/{id}")
@@ -180,6 +197,71 @@ public class ManagerController {
             topicMapper.deleteTopicById(id);
         }
         return "redirect:/manager/topis";
+    }
+
+    //图片上传
+    @ResponseBody
+    @PostMapping("manager/upload")
+    public String upload(MultipartFile file, HttpSession session) {
+//        log.info("进入了upload方法...");
+        if (!ObjectUtils.isEmpty(file)) {
+            //上传时的文件名
+            String originalFilename = file.getOriginalFilename();
+            //文件类型
+            String contentType = file.getContentType();
+            //文件大小
+            long size = file.getSize();
+            //前端input中的name
+            String name = file.getName();
+//            log.info("originalFilename:" + originalFilename);
+//            log.info("contentType:" + contentType);
+//            log.info("size:" + size);
+//            log.info("name:" + name);
+            //由于在前端判断过了，所以我们就不影响性能了,等出现问题再加验证模块
+            //获取扩展名
+            String ext = null;
+            if (originalFilename.contains(".")) {
+                ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+            } else {
+                ext = "." + contentType.substring(contentType.lastIndexOf("/") + 1);
+            }
+            //根据日期来分文件夹保存
+            String dirPath = new SimpleDateFormat("yyyyMMdd").format(new Date());
+            //使用UUID生成本地文件名
+            String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+            String localFileName = uuid + ext;
+//            String classPath = this.getClass().getResource("/").getPath().substring(1);
+////            classPath = classPath.substring(0, classPath.lastIndexOf("/"));
+////            classPath = classPath.substring(0, classPath.lastIndexOf("/"));
+////            classPath = classPath.substring(0, classPath.lastIndexOf("/"));
+////            String filePath = classPath + "/upload/" + dirPath;
+//            String filePath = System.getProperty("user.dir") + "\\upload\\" + dirPath;
+//            log.info(filePath);
+            String filePath = this.getClass().getResource("/").getPath().substring(1);
+            filePath = filePath.substring(0, filePath.indexOf("/")) + "/upload/" + dirPath;
+            File saveFile = new File(filePath, localFileName);
+            if (!saveFile.getParentFile().exists()) {
+                //源码注释:创建此抽象路径名所指定的目录，包括any
+                // 必要但不存在的父目录。
+                // 请注意，如果这样操作失败它可能已经成功创建了一些必要的父目录
+                saveFile.mkdirs();
+            } else {
+                //如果文件已存在，我们就删掉它
+                saveFile.delete();
+            }
+            //开始保存文件
+            try {
+                file.transferTo(saveFile);
+                String url = session.getServletContext().getContextPath() + "/upload/" + dirPath + "/" + localFileName;
+//                log.info(url);
+                return url;
+            } catch (IOException e) {
+//                e.printStackTrace();
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
 }
