@@ -49,7 +49,3 @@ picFile.onchange = function () {
         }
     }
 };
-
-$("#topicSubmit").click(function () {
-    $("#topicForm").submit();
-});

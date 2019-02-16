@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yd.blog.mapper.TopicMapper">
 
-    <insert id="addTopic" parameterType="com.yd.blog.bean.Topic">
-        INSERT INTO topic(name, picSrc) VALUES(#{name},#{picSrc}
+    <insert id="addTopic">
+        INSERT INTO topic(name, pic_src) VALUES(#{name},#{picSrc})
     </insert>
 
     <delete id="deleteTopicById">
@@ -13,14 +13,14 @@
     </delete>
 
     <update id="updateTopic">
-        UPDATE topic SET name=#{name},picSrc=#{picSrc} WHERE id=#{id}
+        UPDATE topic SET name=#{name},pic_src=#{picSrc} WHERE id=#{id}
     </update>
 
     <select id="getTopicById" resultType="com.yd.blog.bean.Topic">
-        SELECT id,name,picSrc FROM topic WHERE id=#{id}
+        SELECT id,name,pic_src FROM topic WHERE id=#{id}
     </select>
 
     <select id="getAllTopic" resultType="com.yd.blog.bean.Topic">
-        SELECT id,name,picSrc FROM topic
+        SELECT id,name,pic_src FROM topic
     </select>
 </mapper>
