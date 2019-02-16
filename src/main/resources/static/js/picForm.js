@@ -26,7 +26,7 @@ picFile.onchange = function () {
         alert(noP);
     } else {
         //验证图片大小:限制2M
-        if (file.size > 1024 * 1024 * 2) {
+        if (file.size > 1024 * 1024) {
             alert(moreSi);
         } else {
             $.ajax({
