@@ -1,13 +1,8 @@
 package com.yd.blog.component;
 
-import com.sun.deploy.net.HttpResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.LocaleResolver;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -42,6 +37,6 @@ public class MyLocaleResolver implements LocaleResolver {
     //该实现不支持动态更改语言环境
     @Override
     public void setLocale(HttpServletRequest request, HttpServletResponse response, Locale locale) {
-
     }
+
 }

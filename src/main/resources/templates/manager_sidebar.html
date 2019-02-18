@@ -8,6 +8,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="all,follow">
+    <link rel="icon" th:href="@{/favicon.ico}">
 </head>
 
 <body>
@@ -25,27 +26,27 @@
     </div>
     <!-- Sidebar Navidation Menus--><span class="heading" th:text="#{manager.siderbar.menu}">菜单</span>
     <ul class="list-unstyled">
-        <li th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'index')?'active':''}">
+        <li th:attr="class=${#strings.contains(#request.getRequestURL(),'index')?'active':''}">
             <a href="#" th:href="@{/manager/index}">
                 <i class="fa fa-home"></i><strong th:text="#{manager.siderbar.home}">首页</strong>
             </a>
         </li>
-        <li th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'artic')?'active':''}">
+        <li th:attr="class=${#strings.contains(#request.getRequestURL(),'artic')?'active':''}">
             <a href="#articleDropdown" data-toggle="collapse"
-               th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'artic')?'':'collapsed'},
-            aria-expanded=${#strings.contains(#httpServletRequest.getRequestURL(),'artic')?'true':'false'}">
+               th:attr="class=${#strings.contains(#request.getRequestURL(),'artic')?'':'collapsed'},
+            aria-expanded=${#strings.contains(#request.getRequestURL(),'artic')?'true':'false'}">
                 <i class="fa fa-inbox"></i>
                 <strong th:text="#{manager.siderbar.am}">文章管理</strong>
             </a>
             <ul id="articleDropdown" class="collapse list-unstyled"
-                th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'artic')?'collapse list-unstyled show':'collapse list-unstyled'}">
-                <li th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'article')?'active':''}">
+                th:attr="class=${#strings.contains(#request.getRequestURL(),'artic')?'collapse list-unstyled show':'collapse list-unstyled'}">
+                <li th:attr="class=${#strings.contains(#request.getRequestURL(),'article')?'active':''}">
                     <a href="#" th:href="@{/manager/article}">
                         <i class="fa fa-file-o"></i>
                         <strong th:text="#{manager.siderbar.aa}">新增文章</strong>
                     </a>
                 </li>
-                <li th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'artics')?'active':''}">
+                <li th:attr="class=${#strings.contains(#request.getRequestURL(),'artics')?'active':''}">
                     <a href="#" th:href="@{/manager/artics}">
                         <i class="fa fa-files-o"></i>
                         <strong th:text="#{manager.siderbar.al}">文章列表</strong>
@@ -53,22 +54,22 @@
                 </li>
             </ul>
         </li>
-        <li th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'topi')?'active':''}">
+        <li th:attr="class=${#strings.contains(#request.getRequestURL(),'topi')?'active':''}">
             <a href="#topicDropdown" data-toggle="collapse"
-               th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'topi')?'':'collapsed'},
-            aria-expanded=${#strings.contains(#httpServletRequest.getRequestURL(),'topi')?'true':'false'}">
+               th:attr="class=${#strings.contains(#request.getRequestURL(),'topi')?'':'collapsed'},
+            aria-expanded=${#strings.contains(#request.getRequestURL(),'topi')?'true':'false'}">
                 <i class="fa fa-tasks"></i>
                 <strong th:text="#{manager.siderbar.tm}">主题管理</strong>
             </a>
             <ul id="topicDropdown" class="collapse list-unstyled"
-                th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'topi')?'collapse list-unstyled show':'collapse list-unstyled'}">
-                <li th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'topic')?'active':''}">
+                th:attr="class=${#strings.contains(#request.getRequestURL(),'topi')?'collapse list-unstyled show':'collapse list-unstyled'}">
+                <li th:attr="class=${#strings.contains(#request.getRequestURL(),'topic')?'active':''}">
                     <a href="#" th:href="@{/manager/topic}">
                         <i class="fa fa-tag"></i>
                         <strong th:text="#{manager.siderbar.aa}">新增主题</strong>
                     </a>
                 </li>
-                <li th:attr="class=${#strings.contains(#httpServletRequest.getRequestURL(),'topis')?'active':''}">
+                <li th:attr="class=${#strings.contains(#request.getRequestURL(),'topis')?'active':''}">
                     <a href="#" th:href="@{/manager/topis}">
                         <i class="fa fa-tags"></i>
                         <strong th:text="#{manager.siderbar.tl}">主题列表</strong>

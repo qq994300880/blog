@@ -4,6 +4,8 @@ server:
     uri-encoding: UTF-8
   servlet:
     context-path: /blog
+#    session:
+#      timeout: 10h  #默认30m 1m以下 全为1m
 spring:
   thymeleaf:
     cache: false
@@ -14,6 +16,9 @@ spring:
     password: 1230
     url: jdbc:mysql://localhost:3306/blog?serverTimezone=GMT%2B8&useUnicode=true&charactorEncoding=utf-8&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
+  mvc:
+    favicon:
+      enabled: false
 mybatis:
   configuration:
     #开启驼峰命名映射

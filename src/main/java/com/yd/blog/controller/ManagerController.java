@@ -48,9 +48,25 @@ public class ManagerController {
 
     //主页
     @GetMapping("manager/index")
-    public String home() {
+    public String home(HttpSession session) {
+        //测试session过期时间
+        testSessionTimeout(session);
         return "manager_home";
     }
+
+    //测试session过期时间
+    private void testSessionTimeout(HttpSession session) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long creationTime = session.getCreationTime();
+        Date date = new Date(creationTime);
+        log.info("creationTime:" + simpleDateFormat.format(date));
+        long lastAccessedTime = session.getLastAccessedTime();
+        date = new Date(lastAccessedTime);
+        log.info("lastAccessedTime:" + simpleDateFormat.format(date));
+        int i = session.getMaxInactiveInterval();
+        log.info("MaxInactiveInterval:" + i);
+    }
+
 
     //简易的登录登出
     @GetMapping("logout")
@@ -78,14 +94,12 @@ public class ManagerController {
 
     @PostMapping("login")
     public String login(Admin admin, HttpSession session, Model model) {
-        log.info(admin.toString());
+//        log.info(admin.toString());
         if (!StringUtils.isEmpty(admin.getUsername()) && !StringUtils.isEmpty(admin.getPassword())) {
             String username = admin.getUsername();
             String password = admin.getPassword();
-            username = StringUtils.deleteAny(username, " ");
-            password = StringUtils.deleteAny(password, " ");
-            log.info(username);
-            log.info(password);
+//            log.info(username);
+//            log.info(password);
             if (!username.equals(rootUsername)) {
                 model.addAttribute("oldUsername", username);
                 model.addAttribute("usernameMsg", true);
@@ -96,7 +110,7 @@ public class ManagerController {
                 model.addAttribute("passwordMsg", true);
                 return "login";
             }
-            session.setAttribute("admin", username);
+            session.setAttribute("admin", admin);
             return "redirect:/manager/index";
         }
         return "login";

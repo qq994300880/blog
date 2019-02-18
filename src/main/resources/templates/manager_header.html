@@ -8,6 +8,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="all,follow">
+    <link rel="icon" th:href="@{/favicon.ico}">
 </head>
 
 <body>
@@ -41,7 +42,7 @@
                         <ul aria-labelledby="languages" class="dropdown-menu">
                             <li th:if="${not #strings.equals(#locale.getCountry(),'CN')}">
                                 <a rel="nofollow" href="#" class="dropdown-item"
-                                   th:href="${#httpServletRequest.getRequestURL()+'?lang=zh_CN'}">
+                                   th:href="${#request.getRequestURL()+'?lang=zh_CN'}">
                                     <img src="../static/img/flags/CN.png" class="mr-2"
                                          th:src="@{/static/img/flags/CN.png}">
                                     <strong th:text="#{manager.lang.CN}">语种</strong>
@@ -49,7 +50,7 @@
                             </li>
                             <li th:if="${not #strings.equals(#locale.getCountry(),'US')}">
                                 <a rel="nofollow" href="#" class="dropdown-item"
-                                   th:href="${#httpServletRequest.getRequestURL()+'?lang=en_US'}">
+                                   th:href="${#request.getRequestURL()+'?lang=en_US'}">
                                     <img src="../static/img/flags/US.png" class="mr-2"
                                          th:src="@{/static/img/flags/US.png}">
                                     <strong th:text="#{manager.lang.US}">语种</strong>
@@ -57,7 +58,7 @@
                             </li>
                             <li th:if="${not #strings.equals(#locale.getCountry(),'JP')}">
                                 <a rel="nofollow" href="#" class="dropdown-item"
-                                   th:href="${#httpServletRequest.getRequestURL()+'?lang=ja_JP'}">
+                                   th:href="${#request.getRequestURL()+'?lang=ja_JP'}">
                                     <img src="../static/img/flags/JP.png" class="mr-2"
                                          th:src="@{/static/img/flags/JP.png}">
                                     <strong th:text="#{manager.lang.JP}">语种</strong>
@@ -65,7 +66,7 @@
                             </li>
                             <li th:if="${not #strings.equals(#locale.getCountry(),'KR')}">
                                 <a rel="nofollow" href="#" class="dropdown-item"
-                                   th:href="${#httpServletRequest.getRequestURL()+'?lang=ko_KR'}">
+                                   th:href="${#request.getRequestURL()+'?lang=ko_KR'}">
                                     <img src="../static/img/flags/KR.png" class="mr-2"
                                          th:src="@{/static/img/flags/KR.png}">
                                     <strong th:text="#{manager.lang.KR}">语种</strong>
