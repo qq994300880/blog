@@ -2,8 +2,10 @@ package com.yd.blog.config;
 
 import com.yd.blog.component.LoginHandlerInterceptor;
 import com.yd.blog.component.MyLocaleResolver;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -59,4 +61,13 @@ public class MyMvcConfig extends WebMvcConfigurationSupport {
         registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/manager/**");
     }
 
+    //添加hiddenHttpMethodFilter,方法一
+    @Bean
+    public FilterRegistrationBean<HiddenHttpMethodFilter> hiddenHttpMethodFilterFilterRegistrationBean() {
+        FilterRegistrationBean<HiddenHttpMethodFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new HiddenHttpMethodFilter());
+        registrationBean.setName("myHidHttpMethodFilter");
+        registrationBean.setOrder(2);
+        return registrationBean;
+    }
 }

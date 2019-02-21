@@ -7,9 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan(value = "com.yd.blog.mapper")
 @SpringBootApplication
 public class BlogApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(BlogApplication.class, args);
     }
-
 }

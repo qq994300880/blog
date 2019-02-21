@@ -13,7 +13,7 @@
     <version>1.0.0</version>
     <name>blog</name>
     <description>搭建个人博客</description>
-
+	
     <properties>
         <java.version>1.8</java.version>
     </properties>

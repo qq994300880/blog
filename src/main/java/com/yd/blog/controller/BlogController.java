@@ -1,17 +1,12 @@
 package com.yd.blog.controller;
 
 
-import com.yd.blog.bean.Blog;
 import com.yd.blog.mapper.BlogMapper;
 import com.yd.blog.mapper.TopicMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.thymeleaf.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 
@@ -64,6 +59,19 @@ public class BlogController {
             model.addAttribute("notice", topicMapper.getTopicById(topicId).getName());
             model.addAttribute("blogList", blogMapper.getBlogsByTopicId(topicId));
         }
+    }
+
+    //测试PUT和Delete
+    @ResponseBody
+    @PutMapping("put")
+    public Object put() {
+        return blogMapper.getAllBlog();
+    }
+
+    @ResponseBody
+    @DeleteMapping("delete")
+    public String delete() {
+        return "测试DELETE请求成功...";
     }
 
 }
