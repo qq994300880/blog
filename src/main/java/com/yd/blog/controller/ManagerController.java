@@ -2,6 +2,7 @@ package com.yd.blog.controller;
 
 import com.yd.blog.bean.Admin;
 import com.yd.blog.bean.Blog;
+import com.yd.blog.bean.CKdemo;
 import com.yd.blog.bean.Topic;
 import com.yd.blog.mapper.BlogMapper;
 import com.yd.blog.mapper.TopicMapper;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
@@ -48,24 +50,24 @@ public class ManagerController {
 
     //主页
     @GetMapping("manager/index")
-    public String home(HttpSession session) {
+    public String home() {
         //测试session过期时间
-        testSessionTimeout(session);
+//        testSessionTimeout(session);
         return "manager_home";
     }
 
     //测试session过期时间
-    private void testSessionTimeout(HttpSession session) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        long creationTime = session.getCreationTime();
-        Date date = new Date(creationTime);
-        log.info("creationTime:" + simpleDateFormat.format(date));
-        long lastAccessedTime = session.getLastAccessedTime();
-        date = new Date(lastAccessedTime);
-        log.info("lastAccessedTime:" + simpleDateFormat.format(date));
-        int i = session.getMaxInactiveInterval();
-        log.info("MaxInactiveInterval:" + i);
-    }
+//    private void testSessionTimeout(HttpSession session) {
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        long creationTime = session.getCreationTime();
+//        Date date = new Date(creationTime);
+//        log.info("creationTime:" + simpleDateFormat.format(date));
+//        long lastAccessedTime = session.getLastAccessedTime();
+//        date = new Date(lastAccessedTime);
+//        log.info("lastAccessedTime:" + simpleDateFormat.format(date));
+//        int i = session.getMaxInactiveInterval();
+//        log.info("MaxInactiveInterval:" + i);
+//    }
 
 
     //简易的登录登出
@@ -213,27 +215,35 @@ public class ManagerController {
         return "redirect:/manager/topis";
     }
 
+    //CKEditor图片上传测试
+    @ResponseBody
+    @PostMapping("/ck/upload")
+    public CKdemo ckUpload(MultipartFile upload, String ckCsrfToken, HttpServletRequest request) {
+        if (!upload.isEmpty()) {
+            log.info("有文件传过来了...");
+        }
+        CKdemo c = new CKdemo();
+        c.setUploaded(1).setUrl(request.getContextPath() + "/upload/20190216/703dd179fe6a4e7fa8164b056b1afddc.jpg");
+        log.info(c.toString());
+        return c;
+    }
+
     //图片上传
     @ResponseBody
     @PostMapping("manager/upload")
-    public String upload(MultipartFile file, HttpSession session) {
-//        log.info("进入了upload方法...");
+    public String upload(MultipartFile file) {
         if (!ObjectUtils.isEmpty(file)) {
             //上传时的文件名
             String originalFilename = file.getOriginalFilename();
             //文件类型
             String contentType = file.getContentType();
             //文件大小
-            long size = file.getSize();
-            //前端input中的name
-            String name = file.getName();
-//            log.info("originalFilename:" + originalFilename);
-//            log.info("contentType:" + contentType);
-//            log.info("size:" + size);
-//            log.info("name:" + name);
+//            long size = file.getSize();
+//            //前端input中的name
+//            String name = file.getName();
             //由于在前端判断过了，所以我们就不影响性能了,等出现问题再加验证模块
             //获取扩展名
-            String ext = null;
+            String ext;
             if (originalFilename.contains(".")) {
                 ext = originalFilename.substring(originalFilename.lastIndexOf("."));
             } else {
@@ -244,13 +254,6 @@ public class ManagerController {
             //使用UUID生成本地文件名
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
             String localFileName = uuid + ext;
-//            String classPath = this.getClass().getResource("/").getPath().substring(1);
-////            classPath = classPath.substring(0, classPath.lastIndexOf("/"));
-////            classPath = classPath.substring(0, classPath.lastIndexOf("/"));
-////            classPath = classPath.substring(0, classPath.lastIndexOf("/"));
-////            String filePath = classPath + "/upload/" + dirPath;
-//            String filePath = System.getProperty("user.dir") + "\\upload\\" + dirPath;
-//            log.info(filePath);
             String filePath = this.getClass().getResource("/").getPath().substring(1);
             filePath = filePath.substring(0, filePath.indexOf("/")) + "/upload/" + dirPath;
             File saveFile = new File(filePath, localFileName);
@@ -267,11 +270,15 @@ public class ManagerController {
             try {
                 file.transferTo(saveFile);
                 String url = "/upload/" + dirPath + "/" + localFileName;
-//                log.info(url);
                 return url;
-            } catch (IOException e) {
-//                e.printStackTrace();
-                return null;
+            } catch (IOException e1) {
+                try {
+                    file.transferTo(saveFile);
+                    String url = "/upload/" + dirPath + "/" + localFileName;
+                    return url;
+                } catch (IOException e2) {
+                    return null;
+                }
             }
         } else {
             return null;

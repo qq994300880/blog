@@ -9,7 +9,7 @@ window.onload = function () {
     // alert(date);
     content.innerHTML = date;
     min.remove();
-    DecoupledEditor
+    BalloonEditor
         .create(document.querySelector('#editor'), {
             language: 'zh-cn',//设置语言
             //设置自定义UI

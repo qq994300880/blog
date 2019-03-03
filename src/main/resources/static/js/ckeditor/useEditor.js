@@ -6,7 +6,7 @@ window.onload = function () {
     }
     ;
     let one;
-    DecoupledEditor
+    BalloonEditor
         .create(document.querySelector('#editor'), {
             language: 'zh-cn',//设置语言
             //设置自定义UI
@@ -19,9 +19,9 @@ window.onload = function () {
             //     ]
             // }
             //图片上传路径
-            // ckfinder: {
-            //     uploadUrl: 'editor-upload'
-            // }
+            ckfinder: {
+                uploadUrl: "http://www.ydblog.com/blog/ck/upload"
+            }
         })
         .then(function (editor) {
             //添加样式到#toolbar-container
