@@ -6,12 +6,12 @@ import com.yd.blog.bean.CKdemo;
 import com.yd.blog.bean.Topic;
 import com.yd.blog.mapper.BlogMapper;
 import com.yd.blog.mapper.TopicMapper;
+import com.yd.blog.utils.MyRealContextPathUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -217,22 +217,49 @@ public class ManagerController {
 
     //CKEditor图片上传测试
     @ResponseBody
-    @PostMapping("/ck/upload")
-    public CKdemo ckUpload(MultipartFile upload, String ckCsrfToken, HttpServletRequest request) {
+    @PostMapping("manager/ck/upload")
+    public CKdemo ckUpload(MultipartFile upload, String ckCsrfToken, HttpServletRequest request) throws IOException {
+        CKdemo c = null;
         if (!upload.isEmpty()) {
-            log.info("有文件传过来了...");
+            String originalFilename = upload.getOriginalFilename();
+            String contentType = upload.getContentType();
+            String ext;
+            if (originalFilename.contains(".")) {
+                ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+            } else {
+                ext = "." + contentType.substring(contentType.lastIndexOf("/") + 1);
+            }
+            //根据日期来分文件夹保存
+            String dirPath = new SimpleDateFormat("yyyyMMdd").format(new Date());
+            //使用UUID生成本地文件名
+            String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+            String localFileName = uuid + ext;
+            String filePath = this.getClass().getResource("/").getPath().substring(1);
+            filePath = filePath.substring(0, filePath.indexOf("/")) + "/upload/blogPic/" + dirPath;
+            File saveFile = new File(filePath, localFileName);
+            if (!saveFile.getParentFile().exists()) {
+                //源码注释:创建此抽象路径名所指定的目录，包括any
+                // 必要但不存在的父目录。
+                // 请注意，如果这样操作失败它可能已经成功创建了一些必要的父目录
+                saveFile.getParentFile().mkdirs();
+            }
+            if (saveFile.exists()) {
+                //如果文件已存在，我们就删掉它
+                saveFile.delete();
+            }
+            //开始保存文件
+            upload.transferTo(saveFile);
+            c = new CKdemo().setUploaded(1).setUrl(MyRealContextPathUtil.get(request) + "/upload/blogPic/" + dirPath + "/" + localFileName);
         }
-        CKdemo c = new CKdemo();
-        c.setUploaded(1).setUrl(request.getContextPath() + "/upload/20190216/703dd179fe6a4e7fa8164b056b1afddc.jpg");
-        log.info(c.toString());
         return c;
     }
 
     //图片上传
     @ResponseBody
     @PostMapping("manager/upload")
-    public String upload(MultipartFile file) {
-        if (!ObjectUtils.isEmpty(file)) {
+    public String upload(MultipartFile file, HttpServletRequest request) throws IOException {
+        String url = null;
+        if (!file.isEmpty()) {
             //上传时的文件名
             String originalFilename = file.getOriginalFilename();
             //文件类型
@@ -258,31 +285,20 @@ public class ManagerController {
             filePath = filePath.substring(0, filePath.indexOf("/")) + "/upload/" + dirPath;
             File saveFile = new File(filePath, localFileName);
             if (!saveFile.getParentFile().exists()) {
-                //源码注释:创建此抽象路径名所指定的目录，包括any
+                //源码注释:
+                // 创建此抽象路径名所指定的目录，包括所有
                 // 必要但不存在的父目录。
                 // 请注意，如果这样操作失败它可能已经成功创建了一些必要的父目录
-                saveFile.mkdirs();
-            } else {
-                //如果文件已存在，我们就删掉它
+                saveFile.getParentFile().mkdirs();
+            }
+            if (saveFile.exists()) {
                 saveFile.delete();
             }
             //开始保存文件
-            try {
-                file.transferTo(saveFile);
-                String url = "/upload/" + dirPath + "/" + localFileName;
-                return url;
-            } catch (IOException e1) {
-                try {
-                    file.transferTo(saveFile);
-                    String url = "/upload/" + dirPath + "/" + localFileName;
-                    return url;
-                } catch (IOException e2) {
-                    return null;
-                }
-            }
-        } else {
-            return null;
+            file.transferTo(saveFile);
+            url = MyRealContextPathUtil.get(request) + "/upload/" + dirPath + "/" + localFileName;
         }
+        return url;
     }
 
 }

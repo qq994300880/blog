@@ -20,7 +20,7 @@ window.onload = function () {
             // }
             //图片上传路径
             ckfinder: {
-                uploadUrl: "http://www.ydblog.com/blog/ck/upload"
+                uploadUrl: "http://www.ydblog.com/blog/manager/ck/upload"
             }
         })
         .then(function (editor) {

@@ -19,6 +19,8 @@ spring:
   mvc:
     favicon:
       enabled: false
+  application:
+    name: myBlog
       #开启hiddenMethodFilter，方法二
 #    hiddenmethod:
 #      filter:
@@ -37,5 +39,15 @@ mybatis:
 #      - classpath:sql/blog.sql
 #      - classpath:sql/topic.sql
 
+#自定义的root账户信息
 blog.root.username: root
 blog.root.password: 12345
+
+#日志相关配置
+logging:
+  level:
+    #定义com.yd.blog包下的日志级别
+    com.yd.blog: info
+  #定义日志文件保存的路径
+  file: D:/log/blog/blog.log
+#更多设置可以在resources文件夹下建立logback-spring.xml来配置

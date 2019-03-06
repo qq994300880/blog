@@ -1,7 +1,6 @@
 var picFile = document.getElementById("picFile");
 var adr = picFile.getAttribute("addr");
 var noP = picFile.getAttribute("noPic");
-var pat = picFile.getAttribute("path");
 var moreSi = picFile.getAttribute("moreSize");
 var failed = picFile.getAttribute("upFailed");
 
@@ -40,7 +39,7 @@ picFile.onchange = function () {
                 success: function (data) {
                     if (null != data) {
                         $("#topic-picSrc").val(data);
-                        $("#topic-url").attr("src", pat + data);
+                        $("#topic-url").attr("src", data);
                     } else {
                         alert(failed);
                     }
